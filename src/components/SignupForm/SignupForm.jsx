@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import * as authService from '../../services/authService';
 
 const SignupForm = ({ setUser }) => {
     const navigate = useNavigate();
@@ -19,12 +20,14 @@ const SignupForm = ({ setUser }) => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
-            setUser(formData);
+            const newUserResponse = await authService.signup(formData);
+            setUser(newUserResponse.user);
             navigate('/');
         } catch (err) {
             updateMessage(err.message);
+            console.log(err.message);
         };
     };
 
